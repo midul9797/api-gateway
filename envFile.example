@@ -1,0 +1,7 @@
+NODE_ENV=development
+PORT=4000
+DATABASE_URL=mongodb+srv://midul:9142021@cluster0.worr8fb.mongodb.net/document-storage?retryWrites=true&w=majority&appName=Cluster0
+REDIS_URL=redis://localhost:6379
+DOCUMENT_MANAGEMENT_SERVICE_URL=http://localhost:4002/api/v1
+NOTIFICATION_SERVICE_URL=http://localhost:4004/api/v1
+BASIC_STORAGE_SERVICE_URL=http://localhost:4001/api/v1

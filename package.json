@@ -1,0 +1,56 @@
+{
+  "name": "api-gateway",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.ts",
+  "scripts": {
+    "start": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec ts-node -T ./src/server.ts",
+    "build": "tsc",
+    "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
+    "lint:fix": "eslint --fix",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "node": true
+    }
+  },
+  "author": "Moklasur Rahman",
+  "license": "ISC",
+  "lint-staged": {
+    "src/**/*.ts": [
+      "npm run lint",
+      "npm run format"
+    ]
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/http-status": "^0.2.30",
+    "@types/node": "^22.10.0",
+    "axios": "^1.7.8",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.15.0",
+    "eslint-config-prettier": "^9.1.0",
+    "express": "^4.21.1",
+    "express-rate-limit": "^7.4.1",
+    "http": "^0.0.1-security",
+    "http-status": "^2.0.0",
+    "mongoose": "^8.8.2",
+    "nodemon": "^3.1.7",
+    "path": "^0.12.7",
+    "prettier": "^3.4.0",
+    "redis": "^4.7.0",
+    "ts-node": "^10.9.2",
+    "zod": "^3.23.8"
+  }
+}
