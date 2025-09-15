@@ -6,13 +6,10 @@ const router = express.Router();
 
 // Define routes for document metadata
 router
-  // Get document metadata by booking ID
-  .get(
-    '/booking/:bookingId',
-    DocumentMetadataController.getDocumentMetadataByBookingId,
-  )
+  .get('/download/:documentId', DocumentMetadataController.downloadDocument)
   // Get document metadata by file ID
-  .get('/file/:fileId', DocumentMetadataController.getDocumentMetadataByFileId)
+  .get('/shared', DocumentMetadataController.getSharedDocumentMetadata)
+  .get('/deleted', DocumentMetadataController.getDeletedDocumentsMetadata)
   // Get document metadata from cache
   .get('/cache', DocumentMetadataController.getDocumentMetadataFromCache)
   // Get a single document metadata by ID
@@ -21,10 +18,21 @@ router
   .get('/', DocumentMetadataController.getAllDocumentMetadata)
   // Create a new document metadata
   .post('/', DocumentMetadataController.createDocumentMetadata)
+  .patch('/share', DocumentMetadataController.shareDocumentMetadata)
   // Update an existing document metadata
+  .patch(
+    '/delete/:documentId',
+    DocumentMetadataController.deleteDocumentMetadata,
+  )
+  .patch(
+    '/restore/:documentId',
+    DocumentMetadataController.restoreDocumentMetadata,
+  )
   .patch('/:documentId', DocumentMetadataController.updateDocumentMetadata)
-  // Delete a document metadata by ID
-  .delete('/:documentId', DocumentMetadataController.deleteDocumentMetadata);
+  .delete(
+    '/:documentId',
+    DocumentMetadataController.deleteDocumentMetadataPermanently,
+  );
 
 // Export the router for document metadata routes
 export const DocumentMetadataRoutes = router;

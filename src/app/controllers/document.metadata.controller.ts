@@ -74,6 +74,54 @@ const deleteDocumentMetadata = catchAsync(
   },
 );
 
+// Controller function to restore document metadata
+
+const restoreDocumentMetadata = catchAsync(
+  async (req: Request, res: Response) => {
+    
+    const result =
+      await DocumentMetadataServices.restoreDocumentMetadataInDB(req); // Restore document metadata from the database
+    sendResponse(res, result); // Send the result as a response
+  },
+);
+
+// Controller function to delete document metadata permanently
+
+const deleteDocumentMetadataPermanently = catchAsync(
+  async (req: Request, res: Response) => {
+    const result =
+      await DocumentMetadataServices.deleteDocumentMetadataPermanentlyInDB(req); // Delete document metadata permanently from the database
+    sendResponse(res, result); // Send the result as a response
+  },
+);
+
+// Controller function to get deleted document metadata
+
+const getDeletedDocumentsMetadata = catchAsync(
+  async (req: Request, res: Response) => {
+    const result =
+      await DocumentMetadataServices.getDeletedDocumentsMetadataInDB(req); // Get deleted document metadata from the database
+    sendResponse(res, result); // Send the result as a response
+  },
+);
+const shareDocumentMetadata = catchAsync(
+  async (req: Request, res: Response) => {
+    const result =
+      await DocumentMetadataServices.shareDocumentMetadataInDB(req); // Share document metadata in the database
+    sendResponse(res, result); // Send the result as a response
+  },
+);
+const getSharedDocumentMetadata = catchAsync(
+  async (req: Request, res: Response) => {
+    const result =
+      await DocumentMetadataServices.getSharedDocumentMetadataInDB(req); // Get shared document metadata from the database
+    sendResponse(res, result); // Send the result as a response
+  },
+);
+const downloadDocument = catchAsync(async (req: Request, res: Response) => {
+  const result = await DocumentMetadataServices.downloadDocumentInDB(req); // Download document from the database
+  sendResponse(res, result); // Send the result as a response
+});
 // Export the DocumentMetadataController with all its functions
 export const DocumentMetadataController = {
   getDocumentMetadata,
@@ -84,4 +132,10 @@ export const DocumentMetadataController = {
   getDocumentMetadataByBookingId,
   getDocumentMetadataByFileId,
   getDocumentMetadataFromCache,
+  restoreDocumentMetadata,
+  deleteDocumentMetadataPermanently,
+  getDeletedDocumentsMetadata,
+  shareDocumentMetadata,
+  getSharedDocumentMetadata,
+  downloadDocument,
 };

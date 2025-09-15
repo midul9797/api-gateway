@@ -36,9 +36,10 @@ const HttpService = (baseUrl: string): AxiosInstance => {
 };
 
 // Create instances for different services using the HttpService function
-const DocumentManagementService = HttpService(
+const DocumentMetadataService = HttpService(
   config.documentManagementServiceUrl as string,
 );
+const CommentService = HttpService(config.commentServiceUrl as string);
 const NotificationService = HttpService(
   config.notificationServiceUrl as string,
 );
@@ -49,7 +50,8 @@ const BasicStorageService = HttpService(
 // Export the services and the HttpService function
 export {
   HttpService,
-  DocumentManagementService,
+  DocumentMetadataService,
   NotificationService,
   BasicStorageService,
+  CommentService,
 };

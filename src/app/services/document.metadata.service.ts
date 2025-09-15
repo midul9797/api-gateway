@@ -1,14 +1,19 @@
 import { Request } from 'express';
 import { IGenericResponse } from '../../interfaces/common';
-import { BasicStorageService as HttpService } from '../../shared/axios';
-import { fileServices } from './file.service';
+import { DocumentMetadataService as HttpService } from '../../shared/axios';
 import { notificationServices } from './notification.service';
+import { BasicStorageService } from '../../shared/axios';
+import { UserServices } from './user.service';
 
 // Function to create document metadata in the database
 const createDocumentMetadataInDB = async (
   req: Request,
 ): Promise<IGenericResponse> => {
   // Post request to create document metadata with the request body and authorization header
+  const author_data = await UserServices.getUserFromDB(req);
+  if (author_data.success) {
+    req.body.author = author_data.data.name;
+  }
   const response: IGenericResponse = await HttpService.post(
     `/document-metadata`,
     req.body,
@@ -110,30 +115,24 @@ const updateDocumentMetadataInDB = async (
   // Extract document ID from request parameters
   const { documentId } = req.params;
   // Extract file from request body
-  const { file } = req.body;
-  console.log(file, documentId);
+
   // Patch request to update document metadata with the file name and authorization header
   const response: IGenericResponse = await HttpService.patch(
     `/document-metadata/${documentId}`,
-    { title: file.name },
+    req.body,
     {
       headers: {
         Authorization: req.headers.authorization,
       },
     },
   );
-  console.log('doc done');
   // If the update is successful, proceed to update the file and send a notification
-  if (response) {
-    req.params = { fileId: req.body.fileId };
-    req.body = file;
-    const fileResponse = await fileServices.updateOneFileInDB(req);
+  if (response.success) {
     req.body = {
-      message: `A new version of ${file.name} has been uploaded`,
+      message: `A new version of ${req.body.title} has been uploaded`,
       type: 'email',
       read: false,
     };
-    console.log('File done');
     const notify = await notificationServices.createNotificationInDB(req);
   }
   return response;
@@ -145,10 +144,10 @@ const deleteDocumentMetadataInDB = async (
 ): Promise<IGenericResponse> => {
   // Extract document ID from request parameters
   const { documentId } = req.params;
-
   // Delete request to remove document metadata with authorization header
-  const response: IGenericResponse = await HttpService.delete(
-    `/document-metadata/${documentId}`,
+  const response: IGenericResponse = await HttpService.patch(
+    `/document-metadata/delete/${documentId}`,
+    {},
     {
       headers: {
         Authorization: req.headers.authorization,
@@ -165,7 +164,72 @@ const deleteDocumentMetadataInDB = async (
   const notify = await notificationServices.createNotificationInDB(req);
   return response;
 };
+const restoreDocumentMetadataInDB = async (
+  req: Request,
+): Promise<IGenericResponse> => {
+  const { documentId } = req.params;
+  const response: IGenericResponse = await HttpService.patch(
+    `/document-metadata/restore/${documentId}`,
+    {},
+    { headers: { Authorization: req.headers.authorization } },
+  );
+  req.body = {
+    message: `A file has been restored`,
+    type: 'email',
+    read: false,
+  };
+  const notify = await notificationServices.createNotificationInDB(req);
+  return response;
+};
+const deleteDocumentMetadataPermanentlyInDB = async (
+  req: Request,
+): Promise<IGenericResponse> => {
+  const { documentId } = req.params;
+  const response: IGenericResponse = await HttpService.delete(
+    `/document-metadata/${documentId}`,
+    { headers: { Authorization: req.headers.authorization } },
+  );
+  return response;
+};
+const getDeletedDocumentsMetadataInDB = async (
+  req: Request,
+): Promise<IGenericResponse> => {
+  const response: IGenericResponse = await HttpService.get(
+    `/document-metadata/deleted`,
+    { headers: { Authorization: req.headers.authorization } },
+  );
+  return response;
+};
+const shareDocumentMetadataInDB = async (
+  req: Request,
+): Promise<IGenericResponse> => {
+  const response: IGenericResponse = await HttpService.patch(
+    `/document-metadata/share`,
+    req.body,
+    { headers: { Authorization: req.headers.authorization } },
+  );
+  return response;
+};
+const getSharedDocumentMetadataInDB = async (
+  req: Request,
+): Promise<IGenericResponse> => {
+  const response: IGenericResponse = await HttpService.get(
+    `/document-metadata/shared`,
+    { headers: { Authorization: req.headers.authorization } },
+  );
 
+  return response;
+};
+const downloadDocumentInDB = async (
+  req: Request,
+): Promise<IGenericResponse> => {
+  const { documentId } = req.params;
+  const response: IGenericResponse = await HttpService.get(
+    `/document-metadata/download/${documentId}`,
+    { headers: { Authorization: req.headers.authorization } },
+  );
+  return response;
+};
 export const DocumentMetadataServices = {
   createDocumentMetadataInDB,
   getDocumentMetadataFromDB,
@@ -175,4 +239,10 @@ export const DocumentMetadataServices = {
   getAllDocumentMetadataFromDB,
   getDocumentMetadataByFileIdFromDB,
   getDocumentMetadataFromRedisCache,
+  restoreDocumentMetadataInDB,
+  deleteDocumentMetadataPermanentlyInDB,
+  getDeletedDocumentsMetadataInDB,
+  shareDocumentMetadataInDB,
+  getSharedDocumentMetadataInDB,
+  downloadDocumentInDB,
 };

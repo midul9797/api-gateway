@@ -5,8 +5,9 @@ const create = z.object({
   body: z.object({
     title: z.string(), // Title of the document
     authorId: z.string(), // ID of the document's author
-    version: z.number(), // Version number of the document
-    bookingId: z.string(), // ID of the booking associated with the document
+    version: z.number(),
+    fileId: z.string(), // Version number of the document
+    // ID of the booking associated with the document
   }),
 });
 
@@ -14,7 +15,7 @@ const create = z.object({
 const update = z.object({
   body: z.object({
     title: z.string(), // Title of the document for update
-    version: z.number(), // Version number of the document for update
+    
   }),
 });
 

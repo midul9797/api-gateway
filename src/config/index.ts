@@ -20,4 +20,6 @@ export default {
   notificationServiceUrl: process.env.NOTIFICATION_SERVICE_URL,
   // URL for the basic storage service
   basicStorageServiceUrl: process.env.BASIC_STORAGE_SERVICE_URL,
+  // URL for the comment service
+  commentServiceUrl: process.env.COMMENT_SERVICE_URL,
 };

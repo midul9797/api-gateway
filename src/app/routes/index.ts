@@ -3,8 +3,9 @@ import { FileRoutes } from './file.route';
 import { DocumentMetadataRoutes } from './document.metadata.route';
 import { UserRoutes } from './user.route';
 import { SystemConfigurationRoutes } from './system.configuration.route';
-import { BookingRecordRoutes } from './booking.route';
+
 import { NotificationRoutes } from './notification.route';
+import { CommentRoutes } from './comment.route';
 
 // Initialize the express router
 const router = express.Router();
@@ -19,13 +20,14 @@ const moduleRoutes = [
     path: '/user',
     route: UserRoutes,
   },
-  {
-    path: '/booking',
-    route: BookingRecordRoutes,
-  },
+
   {
     path: '/document-metadata',
     route: DocumentMetadataRoutes,
+  },
+  {
+    path: '/comment',
+    route: CommentRoutes,
   },
   {
     path: '/notification',

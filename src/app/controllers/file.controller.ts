@@ -43,6 +43,13 @@ const deleteFile = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, result); // Send the result as a response
 });
 
+// Controller function to restore a file
+
+const restoreFile = catchAsync(async (req: Request, res: Response) => {
+  const result = await fileServices.restoreFileByIdFromDB(req); // Restore a file by ID from the database
+  sendResponse(res, result); // Send the result as a response
+});
+
 // Controller function to share a file
 const shareFile = catchAsync(async (req: Request, res: Response) => {
   const result = await fileServices.shareFileInDB(req); // Share a file in the database
@@ -55,6 +62,15 @@ const getSharedFiles = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, result); // Send the result as a response
 });
 
+// Controller function to delete a file permanently
+
+const deleteFilePermanently = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await fileServices.deleteFilePermanentlyByIdFromDB(req); // Delete a file by ID from the database
+    sendResponse(res, result); // Send the result as a response
+  },
+);
+
 // Export the file controller
 export const fileController = {
   uploadFile,
@@ -65,4 +81,6 @@ export const fileController = {
   getFile,
   getFiles,
   getSharedFiles,
+  restoreFile,
+  deleteFilePermanently,
 };
