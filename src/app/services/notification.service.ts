@@ -48,9 +48,45 @@ const getNotificationsFromRedisCache = async (
   return response;
 };
 
+// Function to update a notification in the database
+const updateNotificationInDB = async (
+  req: Request,
+): Promise<IGenericResponse> => {
+  // Patch request to update a notification with the request body and authorization header
+  const response: IGenericResponse = await HttpService.patch(
+    `/notification/${req.params.notificationId}`,
+    req.body,
+    {
+      headers: {
+        Authorization: req.headers.authorization,
+      },
+    },
+  );
+  return response;
+};
+
+// Function to read all notifications in the database
+const readAllNotificationsInDB = async (
+  req: Request,
+): Promise<IGenericResponse> => {
+  // Patch request to read all notifications with the request body and authorization header
+  const response: IGenericResponse = await HttpService.patch(
+    `/notification/read-all`,
+    req.body,
+    {
+      headers: {
+        Authorization: req.headers.authorization,
+      },
+    },
+  );
+  return response;
+};
+
 // Export the notification services
 export const notificationServices = {
   createNotificationInDB,
   getAllNotificationByUserIdFromDB,
   getNotificationsFromRedisCache,
+  updateNotificationInDB,
+  readAllNotificationsInDB,
 };

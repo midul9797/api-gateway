@@ -25,9 +25,23 @@ const getNotificationsFromCache = catchAsync(
   },
 );
 
+// Controller function to update a notification
+const updateNotification = catchAsync(async (req: Request, res: Response) => {
+  const result = await notificationServices.updateNotificationInDB(req); // Update notification in the database
+  sendResponse(res, result); // Send the result as a response
+});
+
+// Controller function to read all notifications
+const readAllNotifications = catchAsync(async (req: Request, res: Response) => {
+  const result = await notificationServices.readAllNotificationsInDB(req); // Read all notifications in the database
+  sendResponse(res, result); // Send the result as a response
+});
+
 // Export the notification controller
 export const notificationController = {
   createNotification,
   getNotifications,
   getNotificationsFromCache,
+  updateNotification,
+  readAllNotifications,
 };

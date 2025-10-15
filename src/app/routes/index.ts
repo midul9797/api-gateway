@@ -1,5 +1,4 @@
 import express from 'express';
-import { FileRoutes } from './file.route';
 import { DocumentMetadataRoutes } from './document.metadata.route';
 import { UserRoutes } from './user.route';
 import { SystemConfigurationRoutes } from './system.configuration.route';
@@ -12,10 +11,6 @@ const router = express.Router();
 
 // Define routes for different modules
 const moduleRoutes = [
-  {
-    path: '/file',
-    route: FileRoutes,
-  },
   {
     path: '/user',
     route: UserRoutes,

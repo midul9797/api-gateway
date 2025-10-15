@@ -15,7 +15,8 @@ router
   )
 
   .get('/cache', notificationController.getNotificationsFromCache) // Route for getting notifications from cache
-  .get('/', notificationController.getNotifications); // Route for getting all notifications
-
+  .get('/', notificationController.getNotifications) // Route for getting all notifications
+  .patch('/:notificationId', notificationController.updateNotification) // Route for updating a notification
+  .patch('/read-all', notificationController.readAllNotifications); // Route for reading all notifications
 // Export the router for notification routes
 export const NotificationRoutes = router;

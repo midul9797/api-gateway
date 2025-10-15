@@ -16,7 +16,10 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 // Set up CORS
 app.use(
   cors({
-    origin: 'https://document-management-suite-frontend.vercel.app',
+    origin: [
+      'https://document-management-suite-frontend.vercel.app',
+      'http://localhost:3000',
+    ],
     credentials: true,
     allowedHeaders: ['Authorization', 'Content-Type'],
   }),
