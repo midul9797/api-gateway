@@ -24,15 +24,23 @@ const createCommentInDB = async (req: Request): Promise<IGenericResponse> => {
   );
   if (response.success) {
     // Prepare the request for notification creation
-    const document_data =
-      await DocumentMetadataServices.getDocumentMetadataFromDB(req);
-    req.body = {
-      message: `${response.data.user} commented on ${document_data.data.title}`,
-      type: 'none',
-      read: false,
-    };
-    // Create a notification for the booking
-    const notify = await notificationServices.createNotificationInDB(req);
+    try {
+      req.params = { documentId: req.body.documentId };
+      const document_data =
+        await DocumentMetadataServices.getDocumentMetadataFromDB(req);
+
+      if (document_data.success) {
+        req.body = {
+          message: `${response.data.user} commented on ${document_data.data.title}`,
+          type: 'none',
+          read: false,
+        };
+        // Create a notification for the booking
+        const notify = await notificationServices.createNotificationInDB(req);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   return response;
 };
